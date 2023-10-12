@@ -1,0 +1,12 @@
+module foo (sumOfSquares)
+
+import base (map, mul, add, fold)
+
+sumOfSquares = sum . map (warbler mul) where
+
+  sum :: List Real -> Real
+  sum = fold add 0.0
+
+  -- a combinator from Raymond Smullyan's aviary
+  -- (see "To Mock a Mockingbird")
+  warbler f x = f x x
