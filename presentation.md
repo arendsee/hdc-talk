@@ -2,46 +2,42 @@
 title: "Programming in the post AGI world"
 author: ""
 date: ""
-paging: ""
+#paging: ""
 theme: "glamour.json"
 ---
 ######
 ######
 
-                     Morloc and programming in the post AGI world
+                       Programming in the post AGI world
 
-                                     Oct 14, 2023
+                                  Oct 14, 2023
 
-                                   Zebulun Arendsee
-
-<!-- Good afternoon, today I will present my work on the development of the morloc    -->
-<!-- programming language and its relevance to the programming in the post AGI world. -->
-<!--                                                                                  -->
-<!-- But first, I should introduce myself.                                            -->
-
----
-                                My official background
-
- * Molecular Biology, B.Sc
- * Bioinformatics and Computational, PhD
- * USDA postdoc
- * Regeneron scientist
-
+                                Zebulun Arendsee
 
 <!--
-I am a scientific programmer
+Good afternoon, I am Zebulun Arendsee, you may call me Zeb. I will present on
+Programming in the post AGI world.
 
-As an undergrad I studied molecular biology and worked in a lab studying multicellularity in bacteria.
+Obviously this talk will be speculative, but I think I can offer some ideas that
+may at least spark discussion.
 
-In grad school I transitioned to bioinformatics and computational biology where I researched the evolutionary origins of novel proteins.
+But first, I should introduce myself.
 
-As a postdoc I worked at the USDA on phylogenetic patterns in influenza.
+As an undergrad, at the University of Wyoming, I studied molecular biology and worked in a lab studying multicellularity in bacteria.
 
-Currently, I work on whole genome sequencing and the design of genetic medicine at Regeneron.
+In grad school, at Iowa State University, I transitioned to bioinformatics and computational biology where I researched the evolutionary origins of novel proteins.
 
-This is my official background.
+As a government postdoc at the USDA, I worked on phylogenetic patterns in influenza.
 
-Unofficially, for the last 5 years I've been working on the morloc programming language. 
+Currently, as a senior scientist at Regeneron, I work on whole genome sequencing and genetic medicine
+
+So why am I presenting at an AGI conference?
+
+For the last 7 years I've been designing an unusual programming language named
+Morloc.
+
+While not exactly an AI project itself, I have always guessed that it would be
+relevant in the future AGI ecosystem.
 -->
 
 ---
@@ -51,22 +47,43 @@ Unofficially, for the last 5 years I've been working on the morloc programming l
 ##
  2. The philosophy and design of morloc
 ##
- 3. Programming languages after AGI and the relation to Morloc
+ 3. Programming in the post-AGI world and the possible relevance of morloc
 
+
+<!--
+My talk will start by covering the systemic flaws  ...
+-->
 
 ---
 ##
 **Bioinformatics is data science focused on biological data**
 
-<!-- Bioinformatics is data science focused on biological data                        -->
-<!--                                                                                  -->
-<!-- A bioinformatics analysis                                                        -->
-<!--                                                                                  -->
-<!--                                                                                  -->
-<!-- I will introduce you to how data is stored and then to the kind of tools used to -->
-<!-- manipulate the data.                                                             -->
-<!--                                                                                  -->
-<!-- Bioinformatics data is stored in flat textual files                              -->
+---
+##
+**Bioinformatics is data science focused on biological data**
+ #
+ * It is behind the results of nearly every biology paper
+ #
+ * It is used to design mRNA vaccines
+ #
+ * It is the foundation of genetic medicine
+ #
+ * It may someday be used to fine tune your gene expression
+
+<!--
+Bioinformatics is data science focused on biological data                       
+
+Bioinformatics is behind the results of nearly every biology paper, it is used
+to design mRNA vaccines, it is the foundation of genetic medicine, it may be
+used to fine tune your gene expression in future.
+
+So it is important that the conclusions of the bioinformatician are reliable.
+                                                                                
+I will introduce you to how data is stored and then to the kind of tools used to
+manipulate the data.                                                            
+                                                                                
+Bioinformatics data is stored in flat textual files
+-->
 
 ---
 
@@ -80,6 +97,12 @@ ATTGCCCCGGTGCTGAGCGGCGCCGCGAGTCGGCCCGAGGCCTCCGGGGACTGCCGTGCCGGGCGGGAGA
 ~~~
 ```
 
+<!--
+One common data format is FASTA format. It is used to store biological sequence
+information. The first line contains metadata about the sequence. The following
+lines store the sequence itself.
+-->
+
 ---
 
 FASTA format
@@ -91,6 +114,51 @@ ATGAAAGCAAAATTATTTGTATTATTCTGTGCATTTACTGCACTGAAAGCTGACACCATTTGTGTAGGCTATCATGCTAA
 CAATTCCACAGACACTGTCGACACGATACTGGAAAAGAATGTTACTGTTACCCATTCAGTTAATTTACTAGAAAGCAGCC
 ~~~
 ```
+
+<!--
+The metadata is a freeform string - there are no enforced specifications
+for how the data is stored
+-->
+
+---
+
+FASTA format
+
+```
+~~~pygmentize -x -l lexer.py:FastaLexer
+>1C.2.1|KT362191|A/swine/Italy/14-30549/2014|H1N1|H1|ITA|2014-03-12
+ATGAAAGCAAAATTATTTGTATTATTCTGTGCATTTACTGCACTGAAAGCTGACACCATTTGTGTAGGCTATCATGCTAA
+CAATTCCACAGACACTGTCGACACGATACTGGAAAAGAATGTTACTGTTACCCATTCAGTTAATTTACTAGAAAGCAGCC
+>1C.2.3|MN393712|A/swine/Liaoning/BX266/2015|H1N1|H1|CHN|2015-11-19
+ATGGAAGCAAAACTATTTGTATTATTCTGTGCATTCACTGCACTGAAAGCTGACACCATTTGTGTAGGCTACCATGCCAA
+CAATTCCACAGACACTGTCGACACTATACTAGAGAAAAATGTGACTGTTACCCATTCAGTTAATTTACTGGAAAACAGCC
+>1C.1|KR701057|A/swine/England/024079/2013|H1N1|H1|GBR|2013-08-21
+ATGGAGACAAAACTGTTTGTGTTATTCTGCACATTTACTGCATTAAAAGCTGATACCATCTGTGTAGGCTATCATGCTAA
+CAACTCCACAGATACTGTTGACACAATACTGGAGAAGAATGTAACTGTCACCCATTCCGTTAACTTACTAGAAAGCAGCC
+~~~
+```
+
+<!--
+Many entries are typically concatenated in one file
+-->
+
+
+---
+Gene Feature Format (GFF)  
+```
+NW_003302555.1  RefSeq  gene  47  2523  .  -  .  ID=gene0;gene_name=ABCD
+NW_003302555.1  RefSeq  mRNA  47  2523  .  -  .  ID=rna0;Parent=gene0
+NW_003302555.1  RefSeq  exon  2444  2523  .  -  .  ID=exon1;Parent=rna0
+NW_003302555.1  RefSeq  exon  2124  2347  .  -  .  ID=exon2;Parent=rna0
+NW_003302555.1  RefSeq  exon  1803  2035  .  -  .  ID=exon3;Parent=rna0
+```
+
+<!--
+Another common format is Gene Feature Format (GFF)
+
+These are TAB-delimited textual files storing information about intervals on a
+biological sequence (such as a genome or protein)
+-->
 
 ---
 Gene Feature Format (GFF)  
@@ -111,9 +179,8 @@ NW_003302555.1  RefSeq  exon  1803  2035  .  -  .  ID=exon3;Parent=rna0
 ```
 
 <!--
-This is hierarchical data, but to infer the parent/child relationships, you have
-to parse the attribute strings to extract ID and Parent relationships and then
-build the hierarchical models in memory.
+The information often contains parent/child relationships. Here the gene is the
+parent of the mRNA and the mRNA of the three exons.
 -->
 
 ---
@@ -135,75 +202,83 @@ NW_003302555.1  RefSeq  exon  1803  2035  .  -  .  rna_id=rna0
 ```
 
 <!--
-But the ID and Parent fields are not standardized
+But how the parent/child relationships are represented is not
+standardized. Different tools encode the relationships in different
+ways. Writing tools that can reliably extract these relationships is a nightmare
+for bioinformaticians, You may ask anyone you like.
 -->
----
-
-Bioinformatics data is transformed by command line tools
 
 ---
 
 Bioinformatics data is transformed by command line tools
 
-```
-gatk HaplotypeCaller \
-    -R reference.fasta \
-    -I input.bam \
-    -O output.vcf \
-    -ERC GVCF \
-    -L intervals.bed \
-    -ip 100 \
-    -stand-call-conf 30 \
-    -A QualByDepth \
-    -G StandardAnnotation
-```
+<!-- Bioinformatics data is typically transformed by command line tools -->
 ---
 
 Bioinformatics data is transformed by command line tools
 
 ```
-java -jar trimmomatic-0.39.jar PE -threads 4 \
-    raw_R1.fastq.gz raw_R2.fastq.gz \
-    trimmed_R1.fastq.gz unpaired_R1.fastq.gz \
-    trimmed_R2.fastq.gz unpaired_R2.fastq.gz \
-    ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+$ gatk HaplotypeCaller \
+     -R reference.fasta \
+     -I input.bam \
+     -O output.vcf \
+     -ERC GVCF \
+     -L intervals.bed \
+     -ip 100 \
+     -stand-call-conf 30 \
+     -A QualByDepth \
+     -G StandardAnnotation
 ```
+
+<!--
+These commands are usually called from the command line. Each tool may wrap many
+subcommands and take many different command line arguments.
+-->
 
 ---
 
 Bioinformatics data is transformed by command line tools
 
 ```
-mafft --thread 4 input.fasta > mafft_aligned.fasta
+$ mafft --thread 4 input.fasta > mafft_aligned.fasta
 
-clustalw2 -INFILE=input.fasta -OUTFILE=clustalw_aligned.fasta
+$ clustalw2 -INFILE=input.fasta -OUTFILE=clustalw_aligned.fasta
 
-muscle -in input.fasta -out muscle_aligned.fasta -maxiters 2
+$ muscle -in input.fasta -out muscle_aligned.fasta -maxiters 2
 ```
+
+<!--
+Here are three multiple sequence alignment programs. They do similar things. But
+the have different argument syntax and different behavior when writing to the
+system.
+-->
 
 ---
 
 Bioinformatics data is transformed by command line tools
 
 ```
-blastp -query protein.fasta -db proteome -out result.xml -evalue 1e-10 \
-    -max_target_seqs 1000 -num_threads 8 -outfmt "6 qseqid sseqid pident \
-    length qstart qend sstart send evalue bitscore" -num_alignments 10
+$ blastp -query protein.fasta -db proteome -outfmt \
+    "6 qseqid sseqid pident length qstart qend sstart send evalue bitscore"
 
-diamond blastp -d proteome.dmnd -q protein.fasta -o result.tsv -e 1e-10 -p 8 \
-    --outfmt 6 qseqid sseqid pident length qstart qend sstart send evalue \
-    bitscore -k 10
+$ diamond blastp -d proteome.dmnd -q protein.fasta --outfmt \
+    6 qseqid sseqid pident length qstart qend sstart send evalue
 
-hmmscan --domtblout result.domtblout --cut_ga -E 1e-10 -o /dev/null \
+$ hmmscan --domtblout result.domtblout --cut_ga -E 1e-10 -o /dev/null \
     custom.hmm protein.fasta
 ```
+
+<!--
+Here are three sequence search tools. The first two, blastp and diaomond use
+similar syntax for specifying what data is returned - they select what columns
+should be in the return data. hmmscan instead returns its own very unique output
+format. -->
 
 ---
 
 After the arguments are parsed the tool must:
 
- 1. Check arguments for consistency (occasionally)
+ 1. Check arguments for consistency
 
  1. Parse input files to an internal data structure
 
@@ -229,26 +304,37 @@ A bioinformatics workflow is a series of calls to command line tools
 
 ```
 ~~~pygmentize -l bash
-cat $H1 |
-    smof grep -P '[Ss]wine' |
-    perl -pe 's;>.*\|(A/[^|]*).*(1[ABC][^|]*|Other-[^|]*).*;>$1|$2;' |
-    smof clean -xu | smof uniq -f |
-    flutile trim ha1 --subtype=H1 --conversion=dna2aa | smof clean -xu > 800-trimmed.faa
+smof grep -P '[Ss]wine' input.fasta | # find swine
+    perl -pe 's;>.*\|(A/[^|]*).*(1[ABC][^|]*|Other-[^|]*).*;>$1|$2;' | # munge headers
+    smof clean -xu | # clean output files
+    smof uniq -f | # find uniq files by header
+    flutile trim ha1 --subtype=H1 --conversion=dna2aa | # the one important command
+    smof clean -xu > trimmed.faa # last cleaning
 ~~~
 ```
+
+<!--
+Bioinformatics pipelines are often written in Bash. Here I first filter the
+input fasta file to find swine sequences, then munge the headers with regular
+expressions (if this looks brittle and cryptic, it totally is), then clean the
+files, uniq the files by header. Then I finally run the command I actually care
+about. Then clean the result and store it.
+-->
 ---
 ```
 ~~~pygmentize -l bash
-cat *fna |
+cat *.fasta |
     grep '>' |
     grep -v Consensus |
     awk 'BEGIN {FS="|"; OFS="\t"} {print $0, $12, $10, $11, $8, "<" $0 ">", $9}' |
     sed 's/>//' |
     sed 's/<>.*lab-[^ ]*/Previously-Tested/' |
-    sed 's/<>\([^|]*\)[^	]*/\1/' |
-    sed 's/		/	?	/g' > metadata.tsv
+    sed 's/<>\([^|]*\)[^\t]*/\1/' |
+    sed 's//\t?\t/g' > metadata.tsv
 ~~~
 ```
+
+<!-- Here is another example, can you guess what this is doing? I can't, and I wrote it -->
 ---
 ```
 ~~~pygmentize -l bash
@@ -258,13 +344,31 @@ maketree_iqtree (){
     sed 's;|;BAR;g' $1 | sed 's;/;SLASH;g' > .x
 
     # iqtree dumps a lot of junk into the working directory and writes STDOUT
-    # to the console (where STDERR should be written). The tree file we want is
+    # to the console (where STDERR should be written).
     iqtree -s .x -nt AUTO > /dev/null
 
     sed 's;BAR;|;g' $1.treefile | sed 's;SLASH;/;g'
 }
 ~~~
 ```
+
+<!-- Many tools need to specially wrapped. Here is a bash function that wraps
+the iqtree phylogenetic tree builder. For some reason, this tree builder will
+replace all the special characters in your fasta headers with underscores. I
+need those special characters in the downstream tree. So I replace bars
+characters with "BAR" and slaches with "SLACH", run the algorithm, and then
+swap the originals back in. Also the iqtree applications dumps a bunch of junk
+intermediate files into the working directory, writes progress messages to
+STDOUT, and stores the output I care about in a file with the filename made by
+catting ".treefile" onto the input filename.
+
+Yup, this is the daily life of the practical bioinformatician.
+
+OK, so I'm not just complaining about my community not following "best
+practices". These brittle methods can lead to more than just massive maintenance
+costs, they can cause real bugs. Let me show you one fun example:
+-->
+
 ---
 
 ```
@@ -278,6 +382,12 @@ TGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAG
 TAACACACTCTGTTAATCTTCTGGAAGACAAGCATAACGGAAAACTATGCAAACTAAGAGGGGTAGCCCCATTGCATTTG
 ATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGATCTGAAGAGCACACAAAAT
 ```
+
+<!--
+This is a sequence pulled from the gisaid database. gisaid stores most of
+influenza and covid sequence data and the vaccine development community relies
+heavily on it. Now look carefully at this sequence, see anything wrong?
+-->
 
 ---
 
@@ -293,28 +403,34 @@ taacacactctgttaatcttctggaagacaagcataacggaaaactatgcaaactaagaggggtagccccattgcatttg
 atggatggtacggttatcaccatcaaaatgagcaggggtcaggatatgcagccgatctgaagagcacacaaaat
 ```
 
+<!--
+Yup, Austria! That doesn't belong in a DNA sequence.
+-->
+
 ---
 
-My guess:
-
-The bioinformatician may have meant to do this
+The bioinformatician may have meant to do something like this
 
 ```
 sed 's/\(>.*|\)AUT\(|.*\)/\1Austria\2/'
 ```
 
-But instead did:
+But accidentally did:
 
 ```
 sed 's/\(>.*|\)AUT\(|.*\)/Austria/'
 ```
 
-This removed the entry separator and joined two sequences around 'Austria"
+This removed the entry separator and joined two sequences around "Austria"
 
 ---
 **There are no compound data structures**
 
-Rather than `[(ann, Sequence)]`, you would have a fasta file:
+In a programming language you might have a structure of type:
+
+`List (Annotation, Sequence)`
+
+But FASTA format records the structure as a raw string:
 
 ```
 ~~~pygmentize -x -l lexer.py:FastaLexer
@@ -326,103 +442,120 @@ Rather than `[(ann, Sequence)]`, you would have a fasta file:
 ---
 **There are no generics**
 
- * No generic annotation can be defined, rather raw untyped string is passed
+ * Annotations have to be passed as raw strings
 
- * General functions like `filter` and `map` are not possible
+ * Basic generic functions like "sort" are not possible
 
- * Instead specialized tools are needed for each format
-
----
- **There are no higher-order functions**
-
-Even if you have `map` and `filter` commands for your specific format, you
-cannot easily give them general functions to map or filter over the entries  
+ * Instead specialized command line tools are needed for each format
 
 ---
- **CLI tools with synonymous roles cannot be easily substituted**
+ **Functions cannot be passed as arguments** <!-- no higher-order functions -->
 
- * Every tools parses arguments in a different way
- * Different input and output formats are supported
- * They may have different (and often undocumented) side effects
+ * No generic `map`, `filter`, or `fold` operations
 
 ---
-**Every command is a system call**
+**Command line tools with the same role cannot be easily substituted**
+
+ * Parse arguments in different ways
+ * Parse input and write output in different formats/flavors
+ * Have different side effects
+
+<!-- Maybe I'm not being entirely fair to bioinformatics -->
 
 ---
-**Every tool is a monolith**
+**Alternatives to bash**
 
-Tools are responsible for too many concerns
+Workflow managers:
+ * Require wrappers around command line tools
+ * Specify workflows with Make-like rule languages (usually)
+ * They manage filenames, handle dependencies, track providence, report
+   progress, and cache results
+ * But they suffer from the same weak abstractions as bash workflows
 
-What should be simple algorithm implementation become software engineering projects
-
-These projects require maintenance
-
-Most bioinformatics tools are broken
-
----
-
-**The root problem**
-
-We have applications instead of libraries, and data files instead of data
-structures, because *there is no one language everyone uses*
-
-Writing single-language libraries limits the userbase 
-
-Unifying the community around one language would improve things, but:
- 1. unification is unlikely
- 2. no one language is best for everything
- 3. mono-culture leads to stagnation
+Scripting languages (e.g., Python or R):
+ * Require wrappers around command line tools
+ * Allow stronger abstractions
+ * But they split the community by language
 
 ---
-**There are alternatives to bash**
 
- * Scripting languages with wrappers around the large external tools
- * Make-like workflow managers with plugins wrapping tools (and many config files)
+Overall:
+
+#
+
+* We have applications instead of functions
+
+#
+
+* We have data files instead of data structures
 
 ---
 
 So what is the solution?
 
 ---
-**Surprise! Morloc!**
+
+So what is the solution?
+
+We could try unifying the community around one language, but:
+ * no one language is best for everything
+ * mono-culture leads to stagnation
+ * people like their current languages (e.g., Python and R)
 
 ---
-**Surprise! Morloc!**
 
-`morloc`
+So what is the solution?
 
- * allows function composition across languages
- * unifies many languages under one type system
+**Morloc!!!**
 
-<!-- This way, I can have my language and eat yours too -->
 ---
+
+So what is the solution?
+
+**Morloc!!!**
+
+
+                              function composition
+
+                                across languages
+
+                           under a common type system
+
+<!--
+This way, I can have my language and eat yours too
+
+morloc gives the workflow designer the power of a modern
+functional language while allowing the nodes of the work-
+flow to be written freely in any supported language using
+native data structures.
+-->
+---
+
+foo.loc
 
 ```
 ~~~pygmentize -x -l lexer.py:MorlocLexer
 module foo (sumOfSquares)
 
-import base (map, mul, add, fold)
+import base (map, mul, add, foldl)
 
-sumOfSquares = sum . map (warbler mul) where
+sumOfSquares = sum . map (\x -> mul x x) where
 
-    sum = fold add 0.0
-
-    -- a combinator from Raymond Smullyan's aviary
-    warbler f x = f x x
+    sum = foldl add 0.0
 ~~~
 ```
 
 <!-- This morloc script defines a module "foo" that exports the single function
      `sumOfSquares`.
 
-     It imports the functions `map`, `mul`, `add` and `fold` from a module named
+     It imports the functions `map`, `mul`, `add` and `foldl` from a module named
      `base`
 
      Notice that `morloc` here is importing basic arithmetic operators. Morloc has no
      functions defined internally.
 
      `sumOfSquares` is implemented as a composition of a sum and map applied to
-     warbler applied to mul. Where sum is defined with the imported fold operator and
+     warbler applied to mul. Where sum is defined with the imported foldl operator and
      warbler is a basic combindators that applies the second argument twice to the
      first argument, in this case, it is used to square an input number.
 
@@ -435,11 +568,11 @@ sumOfSquares = sum . map (warbler mul) where
 
 ```
 ~~~pygmentize -x -l lexer.py:MorlocLexer
-module base (map, mul, fold)
+module base (map, mul, add, foldl)
 
 -- load language-specific implementations
-source cpp from "base.hpp" ("map", "mul", "fold")
-source py from "base.py" ("map", "mul", "fold")
+source cpp from "base.hpp" ("map", "mul", "add", "foldl")
+source py from "base.py" ("map", "mul", "add", "reduce" as foldl)
 
 map :: (a -> b) -> List a -> List b
 map Cpp :: (a -> b) -> "std::vector<$1>" a -> "std::vector<$1>" b
@@ -448,14 +581,11 @@ map Py :: (a -> b) -> "list" a -> "list" b
 mul :: Real -> Real -> Real
 mul Cpp :: "double" -> "double" -> "double"
 mul Py :: "float" -> "float" -> "float"
-
-fold :: (b -> a -> b) -> b -> List a -> b
-fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> "std::vector<$1>" b
-fold Py :: (b -> a -> b) -> b -> "list" a -> "list" b
 ~~~
+...
 ```
 
-<!-- `map`, `mul` and `fold` are all general functions that should have
+<!-- `map`, `mul` and `foldl` are all general functions that should have
 implementations in most languages. So they are included in the `base` morloc
 library (which roughly corresponds to Haskell's prelude).
 
@@ -469,10 +599,10 @@ language-specific signatures. -->
 
 ```
 ~~~pygmentize -x -l lexer.py:MorlocLexer
-module base (map, mul, fold)
+module base (map, mul, add, foldl)
 
-source Cpp from "base.hpp" ("map", "mul", "fold")
-source Py from "base.py" ("map", "mul", "fold")
+source Cpp from "base.hpp" ("map", "mul", "add", "foldl")
+source Py from "base.py" ("map", "mul", "add", "foldl")
 
 type Cpp (List a) = "vector<$1>" a
 type Py (List a) = "list" a
@@ -482,42 +612,45 @@ type Py Real = "float"
 
 map :: (a -> b) -> List a -> List b
 mul :: Real -> Real -> Real
-fold :: (b -> a -> b) -> b -> List a -> b
+add :: Real -> Real -> Real
+foldl :: (b -> a -> b) -> b -> List a -> b
 ~~~
 ```
 
 ---
-
+#
 base.hpp
 ```
 ~~~pygmentize -l C++
-#ifndef __MORLOC_CPPBASE_BASE_HPP__
-#define __MORLOC_CPPBASE_BASE_HPP__
-
 #include <vector>
 #include <functional>
 
 template <class A, class B>
-B fold(std::function<B(B,A)> f, B y, std::vector<A> xs){
+B foldl(std::function<B(B,A)> f, B y, std::vector<A> xs){
     for(std::size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
     return y;
 }
 
-#endif
+// insert add, mul, map
 ~~~
 ```
 
 ---
-
+#
 base.py
 ```
 ~~~pygmentize -l python
-def fold(f, b, xs):
-  for x in xs:
-    b = f(b, x)
-  return b
+from functools import reduce
+
+foldl = lambda f b xs: reduce(f, xs, b)
+
+def add(x, y):
+  return (x + y)
+
+def mul(x, y):
+  return (x * y)
 ~~~
 ```
 
@@ -531,30 +664,51 @@ typechecking and compiling, but I need to move on.
 -->
 
 ---
-##
-##
-
-                       Morloc is focused on building libraries
-
-                      Libraries are functions + type signatures
-
----
-**Why type signatures are nice**
-
-A signature describes a family of functions
-
----
-**Why type signatures are nice**
-
-A signature describes a family of functions
-
-Some families are empty:
-
-``` haskell
-~~~pygmentize -l haskell
-absurd :: () -> a    -- from nothing, anything 
-~~~
+#
 ```
+$ morloc make -o nexus foo.loc
+```
+
+---
+#
+```
+$ morloc make -o nexus foo.loc
+$ ./nexus -h
+The following commands are exported:
+    sumOfSquares
+        param 1: List Real
+        return: Real
+```
+
+---
+#
+```
+$ morloc make -o nexus foo.loc
+$ ./nexus -h
+The following commands are exported:
+    sumOfSquares
+        param 1: List Real
+        return: Real
+$ ./nexus sumOfSquares '[1,2,3]'
+14
+```
+
+---
+# Morloc Summary
+
+ * allows functions to be composed across languages
+ * supports the construction of polyglot libraries
+ * organizes libraries and composition under a common type system
+
+<!-- Morloc is a foundation for designing libraries where functions come from many languages -->
+
+---
+**Why type signatures are nice**
+
+---
+**Why type signatures are nice**
+
+A signature describes a family of functions
 
 ---
 **Why type signatures are nice**
@@ -631,34 +785,10 @@ treeFromDistanceMatrix :: Matrix Real -> Tree Index
 ---
 **Why type signatures are nice**
 
-A signature describes a family of functions
-
-Some families may describe a type of algorithm:
-
-``` haskell
-~~~pygmentize -l haskell 
--- make a multiple sequence alignment using a guide tree
-alignWithGuide :: Tree Index -> List (List Char) -> Matrix Char
-~~~
-```
-
-
----
-**Why type signatures are nice**
-
  Type signatures are:
  * machine-verified documentation
  * a means to organize and query function space
  * a conceptual framework for exploring algorithms <!-- for distilling what is most fundamental about them -->
-
----
-# Morloc Summary
-
- * allows functions to be composed across languages
- * supports the construction of polyglot libraries
- * organizes libraries (and composition) under a common type system
-
-<!-- Morrloc is a foundation for designing libraries where functions come from many languages -->
 
 ---
 ## Programming in the post AGI world
@@ -693,48 +823,50 @@ P0: Everyone is evil
 P1: Narrow intelligence outperforms general intelligence for narrow problems
 
                                 (stupid is fast)
+
 ----------
+
 C1: **So AI will benefit from writing functions**
 
-<!-- A general AI might be able to decompress a file with its native intelligence,
+<!--
+A general AI might be able to decompress a file with its native intelligence,
 just like a human can, but it would be faster to automate the repetitive work
-with a dedicated function -->
+with a dedicated function
+-->
 
 ---
 P2: Writing efficient functions may be expensive
-#
+
 ----------
+
 C2: **Caching is needed**
 
 C3: **A searchable library (database) of functions is needed**
 
-<!-- You don't want to generate a highly optimized algorithm and then just throw it out -->
+<!--
+You don't want to generate a highly optimized algorithm and then just throw it out
+And if you cache something, then you will eventually need to find it again, so a database is needed
+-->
 
 ---
 P3: Functions may need to be shared
 
-P4: Shared function need to be provably safe
-#
+(by P0): Function metadata may not be trustworthy
+
 ----------
-C4: **Inferring types and effects from the function itself must be possible**
 
+C4: **AI must be able to prove that functions they import are correct**
 
-<!-- What are these shared functions? They certainly could be functions in binary
+----------
+
+C5: **AI will need to share code**
+
+<!--
+What are these shared functions? They certainly could be functions in binary
 shared libraries. Next I will argue that they should be higher programming
-languages. -->
+languages.
 
-
----
-P5: Functions need to be composable
-
-P6: Composition requires knowledge of function types and effects
-
-P0: Function metadata may not be trustworthy (everyone is evil)
-#
-----------
-C4: **Inferring types and effects from the function itself must be possible**
-
-<!-- Do the functions mutate their inputs? Write to the console? Raise errors?
+Do the functions mutate their inputs? Write to the console? Raise errors?
 These effects need to be properly propagated. Of course, the creator of the
 function could package the function with a description of its types and effects,
 but if we are sharing functions, if we do not trust our past selves, or if we
@@ -742,96 +874,221 @@ worry the database may be insecure, then we cannot trust the metadata. You may
 not trust the function creator (even if it was your past self)
 
 If you don't trust the other, then you can't trust their documentation 
-Documentation is the cached results of someone else's static analysis -->
+Documentation is the cached results of someone else's static analysis
 
-<!-- Let's talk about these functions. What are they? Binary shared libraries? Or  -->
-<!-- something higher? I'll argue next that they should be declarative, high-level -->
-<!-- descriptions of computation rather than binaries.                             -->
+Let's talk about these functions. What are they? Binary shared libraries? Or
+something higher? I'll argue next that they should be declarative, high-level
+descriptions of computation rather than binaries.
+-->
 
----
-
-(by P1): A narrow AI may validate a function faster than a general AI
-
-P7: Validating binary is unnecessarily complicated
-
-----------
-C5: **AI will use compilers**
-
-<!-- Future AIs may design far more elaborate compilers that we have today, but I do 
-not think that the AGI themselves will serve as the compilers. There is too much
-potential for optimization.                                                      -->
 
 ---
+P3: Functions may need to be shared
 
-P7: Specialized languages may be easier to validate than binary
-
-----------
-**AI may use declarative programming languages**
-
-**Functions may be shared source code and validated, composed and compiled locally**
-
-<!-- it is useful for the AI to be able to pass data into a function and then
-read the results, but it is even more useful if they can compose functions
-together for further processing without needing to generate a specialized
-function for the task -->
-
----
-
-(by P0) Humans should not trust AI generated binaries 
-
-Px. Humans may need to evaluate the code to understand exactly what it is doing 
+(by P0): Function metadata may not be trustworthy
 
 ----------
 
-**AI will need to generate code that is provably benign**
-
-**AI will need to generate readable code in a readable language**
+C4: **AI must be able to prove that functions they import are correct**
 
 ----------
 
-**AI will use a declarative language**
+C5: **AI will need to share code (not just APIs)**
+
+#
+
+*But what language will they use?*
 
 
 ---
-## How is this related to morloc?
 
-```
-~~~graph-easy --as=boxart
-[ AI ] ----> [ AI ] ----> [ Human ] ----> [ Human ]
-[ Human ] ----> [ AI ]
-~~~
-```
+P4: We will want AI to generate code for us
 
-All entities can share and build programs safely given a language + compiler
+P5: We will be very free in how we describe programs
+
+<!--
+How will we tell the AI what we want it to program?
+
+Natural language is one option, but more likely we will use a mix of natural
+language and stricter symbolic language and/or pseudocode. 
+
+Perhaps languages will disappear entirely and all that will be left is
+clarity. Perhaps the AI will rewrite our program description into a language.
+-->
 
 ---
 
-Morloc is useful because it allows humans to design libraries and reason about
-their compositions.
+P4: We will want AI to generate code for us
 
-If an AI is restricted to generating code given only the libraries the human has
-provided, and perhaps a set limit to the size of the abstract syntax tree, then
-they can safely generate code for us.
+P5: We will be very free in how we describe programs
 
+(by P0): We should not trust AI generated code
+
+---
+
+P4: We will want AI to generate code for us
+
+P5: We will be very free in how we describe programs
+
+(by P0): We should not trust AI generated code
+
+---------
+
+C6: **So we will need to verify their code**
+
+---
+
+P4: We will want AI to generate code for us
+
+P5: We will be very free in how we describe programs
+
+(by P0): We should not trust AI generated code
+
+---------
+
+C6: **So we will need to verify their code**
+
+P8: We are lazy <!-- probably my safest premise to far -->
+
+---
+
+P4: We will want AI to generate code for us
+
+P5: We will be very free in how we describe programs
+
+(by P0): We should not trust AI generated code
+
+---------
+
+C6: **So we will need to verify their code**
+
+P8: We are lazy <!-- probably my safest premise to far -->
+
+---------
+
+C7: **We need help**
+
+
+
+
+---
+
+P9: For some languages, static analysis can confirm type correctness and effects <!-- That is all great, but these proofs are a far cry from proof that the code does what we want -->
+
+P10: Functions may be safely tested if they provably have no harmful side-effects
+
+---
+
+P9: For some languages, static analysis can confirm type correctness and effects <!-- That is all great, but these proofs are a far cry from proof that the code does what we want -->
+
+P10: Functions may be safely tested if they provably have no harmful side-effects
+
+P11: Static analysis cannot always prove logical correctness
+
+P12: Tests cannot always prove logical correctness
+
+---
+
+P9: For some languages, static analysis can confirm type correctness and effects <!-- That is all great, but these proofs are a far cry from proof that the code does what we want -->
+
+P10: Functions may be safely tested if they provably have no harmful side-effects
+
+P11: Static analysis cannot always prove logical correctness
+
+P12: Tests cannot always prove logical correctness
+
+---------
+
+C8: **Verifying AI generated functions will take work** <!-- We may need to read the code -->
+
+---
+
+P9: For some languages, static analysis can confirm type correctness and effects <!-- That is all great, but these proofs are a far cry from proof that the code does what we want -->
+
+P10: Functions may be safely tested if they provably have no harmful side-effects
+
+P11: Static analysis cannot always prove logical correctness
+
+P12: Tests cannot always prove logical correctness
+
+---------
+
+C8: **Verifying AI generated functions will take work** <!-- We may need to read the code -->
+
+---------
+
+C9: **We will want to cache verified functions in curated databases**
+
+
+---
+*What kind code should the AI generate?*
+
+---
+
+*What kind code should the AI generate?*
+
+P13: Narrow languages may be easier to evaluate than general languages 
+
+P14: Different people prefer different languages
+
+---
+
+*What kind code should the AI generate?*
+
+P13: Narrow languages may be easier to evaluate than general languages 
+
+P14: Different people prefer different languages
+
+---------
+
+C9: **AI will generate code in many languages**
+
+C10: **The verified function database will be polyglot** 
+
+C11: **Polyglot programs will need to be compiled**
+
+---
+
+*What kind code should the AI generate?*
+
+P13: Narrow languages may be easier to evaluate than general languages 
+
+P14: Different people prefer different languages
+
+---------
+
+C9: **AI will generate code in many languages**
+
+C10: **The verified function database will be polyglot** 
+
+C11: **Polyglot programs will need to be compiled**
+
+---------
+
+C12: **There may be a need for morloc!!!**
 ---
 ## Conclusions
-
- 1. Bioinformatics is going to kill everyone
- 2. Programming languages + compilers will be a necessary means of communicating processes far into the future
- 3. Morloc provides a conceptual framework for thinking about functions and building libraries
+ * Bioinformatics needs a firmer computational foundation
+#
+ * `morloc` composes polyglot functions under a common type system
+#
+ * AI will share functions with each other
+#
+ * Humans will describe programs to AI and then verify the generated code
+#
+ * AGI may make verifiable workflows by generating `morloc` scripts using trusted libraries
 
 ---
-
-## Questions?
+**Questions?**
 
 #
 #
 #
 #
 #
+#
 
-Name: Zebulun Arendsee 
-
-Morloc Github: `https://github.com/morloc-project/morloc`
-
-Email: `zbwrnz@gmail.com`
+Contact:
+ * Name: Zebulun Arendsee
+ * Morloc Github: `https://github.com/morloc-project/morloc`
+ * Email: `zbwrnz@gmail.com`

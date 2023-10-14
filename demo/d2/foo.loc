@@ -1,0 +1,8 @@
+module foo (sumOfSquares)
+
+import pybase (map, add, fold)
+import cppbase (map, mul, fold)
+
+sumOfSquares = sum . map (\x -> mul x x) where
+
+  sum = fold add 0.0
